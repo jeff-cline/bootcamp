@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// SQLite has no native enum support. Role is a validated string —
+// the TS union type + helpers live in src/lib/roles.ts. This keeps
+// the schema portable to Postgres (where a real enum can be reintroduced)
+// without touching app code.
+model User {
+  id                 String        @id @default(cuid())
+  email              String        @unique
+  name               String?
+  passwordHash       String
+  role               String        @default("EXECUTIVE")
+  isActive           Boolean       @default(true)
+  mustChangePassword Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  lastLoginAt        DateTime?
+  activity           ActivityLog[]
+
+  @@index([role])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  detail    String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

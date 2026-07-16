@@ -17,6 +17,12 @@ next-env.d.ts
 .env*.local
 .env.production
 
+# local temp SQLite db (dev only — swap to Postgres for prod, never commit)
+/prisma/dev.db
+/dev.db
+*.db
+*.db-journal
+
 # misc
 .DS_Store
 *.pem
