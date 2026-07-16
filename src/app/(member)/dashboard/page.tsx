@@ -1,0 +1,38 @@
+import { redirect } from 'next/navigation'
+import { getSession } from '@/lib/session'
+import { prisma } from '@/lib/db'
+import { TIER_LABEL, isRole } from '@/lib/roles'
+
+export default async function DashboardPage() {
+  const session = await getSession()
+  if (!session?.userId) redirect('/login')
+
+  const user = await prisma.user.findUnique({ where: { id: session.userId } })
+  if (!user) redirect('/login')
+
+  const role = isRole(user.role) ? user.role : 'EXECUTIVE'
+  const displayName = user.name || user.email
+
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-[#34c5c5]/10 via-[#F6F8FA] to-white px-4 py-16">
+      <div className="max-w-4xl mx-auto">
+        <div className="inline-flex items-center gap-2 bg-[#34c5c5]/15 text-[#0D9488] rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-5">
+          {TIER_LABEL[role]} Member
+        </div>
+        <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">Welcome back, {displayName}.</h1>
+        <p className="text-gray-600 mb-10">Your Beyond Limits Bootcamp member dashboard.</p>
+
+        <div className="grid sm:grid-cols-2 gap-6">
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+            <h2 className="text-lg font-black text-gray-900 mb-2">Your Videos</h2>
+            <p className="text-gray-600 text-sm">Coming soon.</p>
+          </div>
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+            <h2 className="text-lg font-black text-gray-900 mb-2">Community</h2>
+            <p className="text-gray-600 text-sm">Coming soon.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  )
+}

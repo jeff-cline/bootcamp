@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         const appUser = user as AppUser
         token.userId = appUser.id as string
@@ -54,6 +54,18 @@ export const authOptions: NextAuthOptions = {
         token.mustChangePassword = appUser.mustChangePassword
         if (token.impersonating === undefined) token.impersonating = null
       }
+
+      // Triggered via useSession().update() — e.g. right after the forced
+      // change-password flow clears mustChangePassword in the DB, so the
+      // JWT (which otherwise only refreshes on next login) reflects it too.
+      if (trigger === 'update' && token.userId) {
+        const dbUser = await prisma.user.findUnique({ where: { id: token.userId } })
+        if (dbUser && isRole(dbUser.role)) {
+          token.role = dbUser.role
+          token.mustChangePassword = dbUser.mustChangePassword
+        }
+      }
+
       return token
     },
     async session({ session, token }) {
