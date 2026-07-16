@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/session'
 import { prisma } from '@/lib/db'
-import { TIER_LABEL, isRole } from '@/lib/roles'
+import { TIER_LABEL } from '@/lib/roles'
+import { effectiveRole } from '@/lib/impersonation'
 
 export default async function DashboardPage() {
   const session = await getSession()
@@ -10,7 +11,9 @@ export default async function DashboardPage() {
   const user = await prisma.user.findUnique({ where: { id: session.userId } })
   if (!user) redirect('/login')
 
-  const role = isRole(user.role) ? user.role : 'EXECUTIVE'
+  // Uses the impersonated role when a GOD is "viewing as" someone else, so
+  // the tier badge reflects what they're currently previewing.
+  const role = effectiveRole(session) ?? 'EXECUTIVE'
   const displayName = user.name || user.email
 
   return (
