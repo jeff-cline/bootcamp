@@ -1,4 +1,5 @@
 import type { NextAuthOptions, User as NextAuthUser } from 'next-auth'
+import type { JWT } from 'next-auth/jwt'
 import Credentials from 'next-auth/providers/credentials'
 import { prisma } from '@/lib/db'
 import { verifyPassword } from '@/lib/password'
@@ -46,7 +47,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         const appUser = user as AppUser
         token.userId = appUser.id as string
@@ -63,6 +64,15 @@ export const authOptions: NextAuthOptions = {
         if (dbUser && isRole(dbUser.role)) {
           token.role = dbUser.role
           token.mustChangePassword = dbUser.mustChangePassword
+        }
+
+        // Impersonation ("view as"): the client calls useSession().update()
+        // with { impersonating: {...} | null } after POST/DELETE
+        // /api/admin/impersonate to stamp or clear the "view as" state on
+        // this GOD's own JWT. It's never a real login as the target user.
+        if (session && typeof session === 'object' && 'impersonating' in session) {
+          const data = session as { impersonating: JWT['impersonating'] }
+          token.impersonating = data.impersonating ?? null
         }
       }
 
