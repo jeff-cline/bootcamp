@@ -2,11 +2,10 @@
 
 import { Suspense, useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 function LoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
 
@@ -34,7 +33,8 @@ function LoginForm() {
       return
     }
 
-    router.push(result.url ?? callbackUrl)
+    // Hard navigation — router.push() no-ops after signIn() in this Next + next-auth setup
+    window.location.assign(result.url ?? callbackUrl)
   }
 
   return (
