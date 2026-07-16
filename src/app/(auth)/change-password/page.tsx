@@ -2,10 +2,8 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 
 export default function ChangePasswordPage() {
-  const router = useRouter()
   const { data: session, update } = useSession()
 
   const mustChangePassword = session?.mustChangePassword ?? false
@@ -26,26 +24,37 @@ export default function ChangePasswordPage() {
     }
 
     setSubmitting(true)
-    const res = await fetch('/api/account/change-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        currentPassword: mustChangePassword ? undefined : currentPassword,
-        newPassword,
-      }),
-    })
+    try {
+      const res = await fetch('/api/account/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentPassword: mustChangePassword ? undefined : currentPassword,
+          newPassword,
+        }),
+      })
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
-      setError(body.error ?? 'Something went wrong. Please try again.')
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setError(body.error ?? 'Something went wrong. Please try again.')
+        setSubmitting(false)
+        return
+      }
+
+      // Refresh the JWT so mustChangePassword reflects the DB. We then do a
+      // full page navigation rather than router.push(): in this app,
+      // router.push() called right after a useSession().update() reliably
+      // no-ops (the client transition never fires, confirmed by manual
+      // browser testing — the middleware/session/cookie are correct at this
+      // point, a full navigation lands on /dashboard immediately). A hard
+      // navigation re-runs middleware against the now-updated session
+      // cookie, so it can't bounce back to /change-password.
+      await update()
+      window.location.assign('/dashboard')
+    } catch {
+      setError('Something went wrong. Please try again.')
       setSubmitting(false)
-      return
     }
-
-    // Refresh the JWT so mustChangePassword reflects the DB before we
-    // navigate — otherwise the middleware would bounce us right back here.
-    await update()
-    router.push('/dashboard')
   }
 
   return (
