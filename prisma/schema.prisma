@@ -35,3 +35,20 @@ model ActivityLog {
 
   @@index([userId, createdAt])
 }
+
+// Video Vault (Phase 2): YouTube-embed only, no file storage. `youtubeId`
+// is the parsed 11-char id (see src/lib/youtube.ts) — never store a raw
+// URL here so every consumer can build the embed URL the same way. At
+// most one row should have isLive=true at a time; that invariant is
+// enforced in the admin API (src/app/api/admin/videos), not the schema.
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  youtubeId   String
+  isLive      Boolean  @default(false)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@index([isLive])
+}

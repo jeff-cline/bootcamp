@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { getSession } from '@/lib/session'
 import { prisma } from '@/lib/db'
 import { TIER_LABEL } from '@/lib/roles'
@@ -10,6 +11,8 @@ export default async function DashboardPage() {
 
   const user = await prisma.user.findUnique({ where: { id: session.userId } })
   if (!user) redirect('/login')
+
+  const videoCount = await prisma.video.count()
 
   // Uses the impersonated role when a GOD is "viewing as" someone else, so
   // the tier badge reflects what they're currently previewing.
@@ -26,10 +29,15 @@ export default async function DashboardPage() {
         <p className="text-gray-600 mb-10">Your Beyond Limits Bootcamp member dashboard.</p>
 
         <div className="grid sm:grid-cols-2 gap-6">
-          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+          <Link
+            href="/dashboard/videos"
+            className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-md hover:border-[#34c5c5]/40 transition-shadow"
+          >
             <h2 className="text-lg font-black text-gray-900 mb-2">Your Videos</h2>
-            <p className="text-gray-600 text-sm">Coming soon.</p>
-          </div>
+            <p className="text-gray-600 text-sm">
+              {videoCount} video{videoCount === 1 ? '' : 's'} in the vault →
+            </p>
+          </Link>
           <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
             <h2 className="text-lg font-black text-gray-900 mb-2">Community</h2>
             <p className="text-gray-600 text-sm">Coming soon.</p>
