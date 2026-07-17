@@ -131,7 +131,7 @@ export default function UsersTable({
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+            <thead className="bg-[#F6F8FA] text-gray-500 text-xs uppercase tracking-wider">
               <tr>
                 <th className="text-left px-5 py-3 font-bold">Email</th>
                 <th className="text-left px-5 py-3 font-bold">Name</th>
@@ -146,7 +146,10 @@ export default function UsersTable({
                 const editable = canEdit(user)
                 const isSelf = user.id === currentUserId
                 return (
-                  <tr key={user.id} className={!user.isActive ? 'opacity-50' : ''}>
+                  <tr
+                    key={user.id}
+                    className={`hover:bg-[#F4F1EC]/60 transition-colors ${!user.isActive ? 'opacity-50' : ''}`}
+                  >
                     <td className="px-5 py-3 font-semibold text-gray-900">
                       {user.email}
                       {user.mustChangePassword && (
@@ -161,7 +164,7 @@ export default function UsersTable({
                         value={user.role}
                         disabled={!editable || busyId === user.id}
                         onChange={(e) => handleRoleChange(user, e.target.value as Role)}
-                        className="rounded-lg border border-gray-300 px-2 py-1 text-sm disabled:opacity-50"
+                        className="rounded-lg border border-gray-300 px-2 py-1 text-sm disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#34c5c5] focus:border-transparent"
                       >
                         {ROLES.map((r) => (
                           <option key={r} value={r}>
@@ -261,7 +264,7 @@ function CreateUserModal({
   return (
     <div className="fixed inset-0 z-40 bg-black/30 flex items-center justify-center px-4">
       <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 w-full max-w-md">
-        <h2 className="text-xl font-black text-gray-900 mb-1">Create user</h2>
+        <h2 className="text-xl font-black text-gray-800 mb-1">Create user</h2>
         <p className="text-sm text-gray-500 mb-6">They&apos;ll be forced to change this temp password on first login.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">

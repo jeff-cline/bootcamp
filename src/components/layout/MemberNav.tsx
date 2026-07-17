@@ -10,7 +10,7 @@ export default function MemberNav() {
   return (
     <header className="bg-white border-b border-gray-100">
       <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/dashboard" className="font-black text-gray-900">
+        <Link href="/dashboard" className="font-black text-[#0D9488]">
           Beyond Limits Bootcamp
         </Link>
         <div className="flex items-center gap-4 text-sm font-bold">

@@ -34,7 +34,7 @@ export default async function AdminUsersPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-black text-gray-900">User management</h1>
+        <h1 className="text-2xl md:text-3xl font-black text-gray-800">User management</h1>
         <p className="text-gray-600 mt-1">Create accounts, change roles, and view as another tier.</p>
       </div>
       <UsersTable

@@ -26,7 +26,7 @@ export default async function AdminHomePage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-black text-gray-900">Admin dashboard</h1>
+        <h1 className="text-2xl md:text-3xl font-black text-gray-800">Admin dashboard</h1>
         <p className="text-gray-600 mt-1">Roster health and recent activity across the platform.</p>
       </div>
 
@@ -47,7 +47,7 @@ function KpiTile({ label, value }: { label: string; value: number }) {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4">
       <p className="text-xs font-bold uppercase tracking-wider text-gray-400">{label}</p>
-      <p className="text-2xl font-black text-gray-900 mt-1">{value}</p>
+      <p className="text-2xl font-black text-gray-800 mt-1">{value}</p>
     </div>
   )
 }

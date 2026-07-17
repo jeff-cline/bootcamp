@@ -43,7 +43,7 @@ function LoginForm() {
         <Link href="/" className="inline-block text-sm font-bold uppercase tracking-widest text-[#0D9488] mb-4">
           Beyond Limits Bootcamp
         </Link>
-        <h1 className="text-3xl font-black text-gray-900">Sign in</h1>
+        <h1 className="text-3xl font-black text-gray-800">Sign in</h1>
         <p className="mt-2 text-gray-600">Welcome back. Enter your details to continue.</p>
       </div>
 

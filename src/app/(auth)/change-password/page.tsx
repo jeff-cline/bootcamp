@@ -61,7 +61,7 @@ export default function ChangePasswordPage() {
     <main className="min-h-screen bg-gradient-to-b from-[#34c5c5]/10 via-[#F6F8FA] to-white flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-black text-gray-900">
+          <h1 className="text-3xl font-black text-gray-800">
             {mustChangePassword ? 'Set a new password' : 'Change your password'}
           </h1>
           <p className="mt-2 text-gray-600">

@@ -15,11 +15,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <>
       <ImpersonationBanner />
-      <div className="min-h-screen bg-[#F6F8FA]">
+      <div className="min-h-screen bg-gradient-to-b from-[#34c5c5]/8 via-[#F6F8FA] to-white">
         <header className="bg-white border-b border-gray-100">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <span className="font-black text-gray-900">Beyond Limits Admin</span>
+              <span className="font-black text-[#0D9488]">Beyond Limits Admin</span>
               <nav className="flex items-center gap-4 text-sm font-bold text-gray-600">
                 <Link href="/admin" className="hover:text-[#0D9488]">
                   Dashboard

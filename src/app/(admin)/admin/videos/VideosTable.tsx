@@ -85,7 +85,7 @@ export default function VideosTable({ initialVideos }: { initialVideos: AdminVid
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+            <thead className="bg-[#F6F8FA] text-gray-500 text-xs uppercase tracking-wider">
               <tr>
                 <th className="text-left px-5 py-3 font-bold">Title</th>
                 <th className="text-left px-5 py-3 font-bold">YouTube ID</th>
@@ -96,7 +96,7 @@ export default function VideosTable({ initialVideos }: { initialVideos: AdminVid
             </thead>
             <tbody className="divide-y divide-gray-100">
               {videos.map((video) => (
-                <tr key={video.id}>
+                <tr key={video.id} className="hover:bg-[#F4F1EC]/60 transition-colors">
                   <td className="px-5 py-3 font-semibold text-gray-900">{video.title}</td>
                   <td className="px-5 py-3 text-gray-500 font-mono text-xs">{video.youtubeId}</td>
                   <td className="px-5 py-3 text-gray-500">{fmt(video.publishedAt)}</td>
@@ -219,7 +219,7 @@ function VideoModal({
   return (
     <div className="fixed inset-0 z-40 bg-black/30 flex items-center justify-center px-4">
       <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 w-full max-w-md">
-        <h2 className="text-xl font-black text-gray-900 mb-1">
+        <h2 className="text-xl font-black text-gray-800 mb-1">
           {mode === 'create' ? 'Add video' : 'Edit video'}
         </h2>
         <p className="text-sm text-gray-500 mb-6">

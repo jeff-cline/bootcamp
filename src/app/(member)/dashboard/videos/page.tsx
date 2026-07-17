@@ -24,7 +24,7 @@ export default async function VideosPage() {
         <Link href="/dashboard" className="text-sm font-bold text-[#0D9488] hover:underline">
           ← Back to dashboard
         </Link>
-        <h1 className="text-3xl md:text-4xl font-black text-gray-900 mt-4 mb-2">Video Vault</h1>
+        <h1 className="text-3xl md:text-4xl font-black text-gray-800 mt-4 mb-2">Video Vault</h1>
         <p className="text-gray-600 mb-10">{videos.length} video{videos.length === 1 ? '' : 's'}.</p>
 
         {liveVideo && (
@@ -42,7 +42,7 @@ export default async function VideosPage() {
                 allowFullScreen
               />
             </div>
-            <h2 className="text-xl font-black text-gray-900 mt-4">{liveVideo.title}</h2>
+            <h2 className="text-xl font-black text-gray-800 mt-4">{liveVideo.title}</h2>
             {liveVideo.description && <p className="text-gray-600 mt-1">{liveVideo.description}</p>}
           </div>
         )}
@@ -67,7 +67,7 @@ export default async function VideosPage() {
                   />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-black text-gray-900 mb-1">{video.title}</h3>
+                  <h3 className="font-black text-gray-800 mb-1">{video.title}</h3>
                   {video.description && (
                     <p className="text-gray-600 text-sm mb-2 line-clamp-2">{video.description}</p>
                   )}
