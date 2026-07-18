@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
   const json = await req.json().catch(() => null)
   const parsed = schema.safeParse(json)
-  if (!parsed.success) return NextResponse.json({ error: 'Pick a category and write your highlight.' }, { status: 400 })
+  if (!parsed.success) return NextResponse.json({ error: 'Pick a category and write your HYghLight.' }, { status: 400 })
 
   const result = await postHighlight(session.userId, email, parsed.data.category, parsed.data.text)
   return NextResponse.json(result)

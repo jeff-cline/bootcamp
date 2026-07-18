@@ -37,7 +37,7 @@ export default async function CommunityPage() {
 
         {/* Stats + badges */}
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <Stat label="Your highlights" value={total} />
+          <Stat label="Your HYghLights" value={total} />
           <Stat label="Best streak" value={longest} />
           <Stat label="Badges" value={earnedCount(badges)} />
         </div>
@@ -64,7 +64,7 @@ export default async function CommunityPage() {
         <h3 className="text-gray-800 font-black mt-10 mb-3">The wins wall</h3>
         {feed.length === 0 ? (
           <div className="bg-white border border-gray-100 rounded-3xl shadow-sm p-8 text-center text-gray-500">
-            No highlights yet — be the first to share a win.
+            No HYghLights yet — be the first to share a win.
           </div>
         ) : (
           <div className="space-y-4">

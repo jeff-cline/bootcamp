@@ -45,7 +45,7 @@ export default async function DashboardPage() {
             className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-md hover:border-[#34c5c5]/40 transition-shadow"
           >
             <h2 className="text-lg font-black text-gray-800 mb-2">Community</h2>
-            <p className="text-gray-600 text-sm">Share highlights, earn badges, celebrate the wins →</p>
+            <p className="text-gray-600 text-sm">Share HYghLights, earn badges, celebrate the wins →</p>
           </Link>
         </div>
       </div>

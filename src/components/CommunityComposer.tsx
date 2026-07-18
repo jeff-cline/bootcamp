@@ -48,7 +48,7 @@ export default function CommunityComposer() {
     setSubmitting(false)
     if (!res.ok) {
       const b = await res.json().catch(() => ({}))
-      setError(b.error ?? 'Could not save your highlight.')
+      setError(b.error ?? 'Could not save your HYghLight.')
       return
     }
     setText('')
@@ -61,7 +61,7 @@ export default function CommunityComposer() {
 
   return (
     <div className="bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-sm">
-      <h2 className="text-xl md:text-2xl font-black text-gray-800 mb-1">What were your highlights today?</h2>
+      <h2 className="text-xl md:text-2xl font-black text-gray-800 mb-1">What were your HYghLights today?</h2>
       <p className="text-gray-500 text-sm mb-5">Share a win — your whole community celebrates with you.</p>
 
       {error && (
