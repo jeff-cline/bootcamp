@@ -2,17 +2,18 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 
 // Prisma 7: the runtime client connects via an explicit driver adapter.
-// This app runs on the shared Neon Postgres database but is ISOLATED to the
-// `beyondlimits` schema — the adapter's `schema` option qualifies every
-// generated query with it, so bootcamp can never read or write another
-// project's tables in `public`.
-//
-// DATABASE_URL is Neon's POOLED (pgbouncer) connection string — correct for
-// serverless. Migrations use the DIRECT connection instead (see prisma.config.ts).
+// This app runs on its OWN Postgres database (one DB per app — the same
+// pattern as every other site on the server), so the default `public` schema
+// already isolates it. Set DATABASE_SCHEMA only when sharing one database via
+// a named schema (e.g. an external managed DB); left unset it uses `public`.
 const url = process.env.DATABASE_URL
 if (!url) throw new Error('DATABASE_URL is not set')
 
-const adapter = new PrismaPg({ connectionString: url }, { schema: 'beyondlimits' })
+const schema = process.env.DATABASE_SCHEMA
+const adapter = new PrismaPg(
+  { connectionString: url },
+  schema ? { schema } : undefined,
+)
 
 const g = globalThis as unknown as { prisma?: PrismaClient }
 

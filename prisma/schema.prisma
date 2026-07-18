@@ -8,11 +8,9 @@ datasource db {
 
 // Role is a validated string (not a native Postgres enum) — the TS union
 // type + helpers live in src/lib/roles.ts. Keeping it a plain string means
-// adding a tier never needs a DB migration. This DB is the shared Neon
-// instance; bootcamp is isolated to the `beyondlimits` schema (search_path
-// is set on the runtime connection in src/lib/db.ts; migrations target it
-// via the schema param on DIRECT_URL). Nothing here can touch other apps'
-// tables in the `public` schema.
+// adding a tier never needs a schema change. The app has its own Postgres
+// database (one DB per app, the same pattern as the other sites on the
+// server), so the default `public` schema already isolates it.
 model User {
   id                 String        @id @default(cuid())
   email              String        @unique
