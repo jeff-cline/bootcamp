@@ -21,7 +21,18 @@ function VideoCard({ video, onPlay }: { video: VaultVideo; onPlay: (v: VaultVide
       <div className="relative aspect-video bg-gradient-to-br from-[#34c5c5]/15 to-[#e07800]/10 flex items-center justify-center overflow-hidden">
         {video.thumbnailUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={video.thumbnailUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          <img src={video.thumbnailUrl} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+        ) : video.fileUrl ? (
+          // No source thumbnail — show a frame from the video itself (~2s in).
+          // preload="metadata" keeps it light; the media fragment seeks to the frame.
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src={`${video.fileUrl}#t=2`}
+            preload="metadata"
+            muted
+            playsInline
+            tabIndex={-1}
+          />
         ) : null}
         <span className="relative z-10 w-12 h-12 rounded-full bg-white/90 shadow flex items-center justify-center group-hover:scale-110 transition-transform">
           <svg viewBox="0 0 24 24" className="w-5 h-5 ml-0.5 fill-[#e07800]"><path d="M8 5v14l11-7z" /></svg>
