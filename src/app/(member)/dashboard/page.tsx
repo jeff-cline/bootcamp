@@ -4,6 +4,7 @@ import { getSession } from '@/lib/session'
 import { prisma } from '@/lib/db'
 import { TIER_LABEL } from '@/lib/roles'
 import { effectiveRole } from '@/lib/impersonation'
+import { getVault } from '@/lib/vault'
 
 export default async function DashboardPage() {
   const session = await getSession()
@@ -12,7 +13,8 @@ export default async function DashboardPage() {
   const user = await prisma.user.findUnique({ where: { id: session.userId } })
   if (!user) redirect('/login')
 
-  const videoCount = await prisma.video.count()
+  const { videos } = await getVault()
+  const videoCount = videos.length
 
   // Uses the impersonated role when a GOD is "viewing as" someone else, so
   // the tier badge reflects what they're currently previewing.
