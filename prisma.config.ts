@@ -1,12 +1,17 @@
 import 'dotenv/config'
 import { defineConfig, env } from 'prisma/config'
 
-// Prisma 7 moved the datasource connection URL out of schema.prisma and into
-// this config file (used by the CLI for migrate/studio/etc). The runtime
-// PrismaClient gets its own connection via a driver adapter — see src/lib/db.ts.
+// Prisma 7 reads the datasource connection URL for CLI operations
+// (migrate / studio / introspect) from here. The runtime PrismaClient gets
+// its own connection via the pg driver adapter — see src/lib/db.ts.
+//
+// Migrations use DIRECT_URL: Neon's NON-POOLED endpoint (pgbouncer can't run
+// DDL / advisory locks) with `?schema=beyondlimits`, which scopes every
+// migration — and the _prisma_migrations history table — to our isolated
+// schema on the shared database. Other apps' tables in `public` are untouched.
 export default defineConfig({
   schema: 'prisma/schema.prisma',
   datasource: {
-    url: env('DATABASE_URL'),
+    url: env('DIRECT_URL'),
   },
 })

@@ -3,13 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
-// SQLite has no native enum support. Role is a validated string —
-// the TS union type + helpers live in src/lib/roles.ts. This keeps
-// the schema portable to Postgres (where a real enum can be reintroduced)
-// without touching app code.
+// Role is a validated string (not a native Postgres enum) — the TS union
+// type + helpers live in src/lib/roles.ts. Keeping it a plain string means
+// adding a tier never needs a DB migration. This DB is the shared Neon
+// instance; bootcamp is isolated to the `beyondlimits` schema (search_path
+// is set on the runtime connection in src/lib/db.ts; migrations target it
+// via the schema param on DIRECT_URL). Nothing here can touch other apps'
+// tables in the `public` schema.
 model User {
   id                 String        @id @default(cuid())
   email              String        @unique

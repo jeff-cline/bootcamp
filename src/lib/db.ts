@@ -1,14 +1,18 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-// Prisma 7: the runtime client no longer reads the datasource URL from
-// schema.prisma — it connects via an explicit driver adapter. SQLite here
-// is a TEMP local dev database; swap this file's adapter (and the
-// datasource provider in prisma/schema.prisma) when moving to Postgres.
+// Prisma 7: the runtime client connects via an explicit driver adapter.
+// This app runs on the shared Neon Postgres database but is ISOLATED to the
+// `beyondlimits` schema — the adapter's `schema` option qualifies every
+// generated query with it, so bootcamp can never read or write another
+// project's tables in `public`.
+//
+// DATABASE_URL is Neon's POOLED (pgbouncer) connection string — correct for
+// serverless. Migrations use the DIRECT connection instead (see prisma.config.ts).
 const url = process.env.DATABASE_URL
 if (!url) throw new Error('DATABASE_URL is not set')
 
-const adapter = new PrismaBetterSqlite3({ url })
+const adapter = new PrismaPg({ connectionString: url }, { schema: 'beyondlimits' })
 
 const g = globalThis as unknown as { prisma?: PrismaClient }
 
