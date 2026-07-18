@@ -20,6 +20,8 @@ export type FeedItem = {
   isMine: boolean
   category: string
   text: string
+  photoUrl: string | null
+  videoUrl: string | null
   createdAt: string
   counts: Record<string, number>
   mine: string[]
@@ -35,7 +37,7 @@ function daysBetween(a: Date, b: Date): number {
 async function getFeed(userId: string, limit = 50): Promise<FeedItem[]> {
   const hs = (
     await pool.query(
-      `SELECT h.id, h."userId", h.email, h.category, h.text, h."createdAt",
+      `SELECT h.id, h."userId", h.email, h.category, h.text, h."photoUrl", h."videoUrl", h."createdAt",
               COALESCE(p."displayName", split_part(h.email, '@', 1)) AS author
        FROM "Highlight" h
        LEFT JOIN "Profile" p ON p."userId" = h."userId"
@@ -64,6 +66,8 @@ async function getFeed(userId: string, limit = 50): Promise<FeedItem[]> {
       isMine: h.userId === userId,
       category: h.category,
       text: h.text,
+      photoUrl: h.photoUrl ?? null,
+      videoUrl: h.videoUrl ?? null,
       createdAt: new Date(h.createdAt).toISOString(),
       counts,
       mine,
